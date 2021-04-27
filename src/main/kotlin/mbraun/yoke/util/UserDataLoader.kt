@@ -14,6 +14,7 @@
 //
 //    @PostConstruct
 //    fun loadData(){
+//        userDataRepository.deleteAll()
 //        userDataRepository.save(UserData(
 //            UUID.randomUUID(),
 //            "123456",
@@ -22,6 +23,15 @@
 //            30,
 //            Gender.MALE,
 //            Role.PRIMARY_OWNER
+//        ))
+//        userDataRepository.save(UserData(
+//            UUID.randomUUID(),
+//            "i_love_marco",
+//            "SexyJTSophie",
+//            "julia.thum@gmx.de",
+//            25,
+//            Gender.FEMALE,
+//            Role.ADMIN
 //        ))
 //    }
 //

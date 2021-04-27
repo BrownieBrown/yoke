@@ -18,7 +18,7 @@ data class UserData(
 
     // TODO: add password conformation
 
-    @Column(name = "userName")
+    @Column(name = "user_name")
     @NotNull
     @NotBlank(message =  "UserName can not be null")
     var userName: String,
@@ -34,13 +34,13 @@ data class UserData(
     @Max(value = 150, message = "Age should not be greater than 150")
     var age: Int,
 
-    @Column(name = "gender")
-    @NotNull
-    @NotBlank
-    var gender: Enum<Gender>,
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender")
+    var gender: Gender,
+
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    @NotNull
-    @NotBlank
-    var role: Enum<Role>
+    var role: Role
 )
