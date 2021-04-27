@@ -5,6 +5,7 @@ import mbraun.yoke.service.UserDataService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.*
 import javax.validation.Valid
 
 @RestController
@@ -12,9 +13,13 @@ import javax.validation.Valid
 class UserDataController(@Autowired private val userDataService: UserDataService) {
 
     @GetMapping
-    fun getAllUserData(): ResponseEntity<Sequence<UserData>> {
-        val userData = userDataService.findUserData()
-        return ResponseEntity.ok().body(userData)
+    fun getAllUserData(): ResponseEntity<List<UserData>> {
+        return userDataService.getAllUserData()
+    }
+
+    @GetMapping("/{id}")
+    fun getSingleUserData(@PathVariable("id") id: UUID) {
+        return userDataService.getSingleUserData(id)
     }
 
     @PostMapping
