@@ -32,5 +32,8 @@ class UserDataController(@Autowired private val userDataService: UserDataService
         return userDataService.updateUserName(id, newUserName)
     }
 
-
+    @PatchMapping("/{id}")
+    fun updateEmail(@PathVariable id: UUID, @RequestBody newEmail: String ): ResponseEntity<UserData> {
+        return userDataService.updateEmail(id, newEmail)
+    }
 }

@@ -4,7 +4,6 @@ import mbraun.yoke.exception.ResourceNotFoundException
 import mbraun.yoke.model.UserData
 import mbraun.yoke.repository.UserDataRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpOutputMessage
 import org.springframework.http.HttpStatus.*
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
@@ -63,5 +62,18 @@ class UserDataService(@Autowired private val userDataRepository: UserDataReposit
 
         return ResponseEntity<UserData>(userDataRepository.save(user), OK)
 
+    }
+
+    fun updateEmail(id: UUID, newEmail: String): ResponseEntity<UserData> {
+        val user = searchForUser(id)
+        val mailAddressExists = userDataRepository.selectedEmailExists(newEmail)
+
+        if (mailAddressExists) {
+            throw Exception("The email $newEmail is already taken.")
+        }
+
+        user.email = newEmail
+
+        return ResponseEntity<UserData>(userDataRepository.save(user), OK)
     }
 }
