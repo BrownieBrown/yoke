@@ -14,9 +14,9 @@ class UserDataService(@Autowired private val userDataRepository: UserDataReposit
     fun addUserData(userData: UserData) {
         val mailAddressExist = userDataRepository.selectedEmailExists(userData.email)
 
-//        if (mailAddressExist) {
-//            throw Exception(message = "The Email ${userData.email} is already taken")
-//        }
+        if (mailAddressExist) {
+            throw Exception("The Email ${userData.email} is already taken")
+        }
 
         userDataRepository.save(userData)
     }

@@ -18,12 +18,12 @@ data class UserData(
 
     // TODO: add password conformation
 
-    @Column(name = "user_name")
+    @Column(name = "user_name", unique = true)
     @NotNull
     @NotBlank(message =  "UserName can not be null")
     var userName: String,
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     @Email
     @NotNull
     @NotEmpty
