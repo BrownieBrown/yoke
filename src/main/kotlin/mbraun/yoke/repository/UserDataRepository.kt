@@ -12,4 +12,7 @@ interface UserDataRepository: JpaRepository<UserData, UUID> {
     @Query("SELECT case when count(s) > 0 then true else false end from user_data s where s.email = ?1", nativeQuery = true)
     fun selectedEmailExists(email: String): Boolean
 
+    @Query("SELECT case when count(s) > 0 then true else false end from user_data s where s.user_name = ?1", nativeQuery = true)
+    fun selectedUserNameExists(userName: String) : Boolean
+
 }

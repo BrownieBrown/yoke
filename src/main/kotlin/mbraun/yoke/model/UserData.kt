@@ -10,11 +10,11 @@ import javax.validation.constraints.*
 data class UserData(
     @Column(name = "id")
     @Id
-    private val id: UUID,
+    private val id: UUID = UUID.randomUUID(),
 
     // TODO: Add password constraint
     @Column(name = "password")
-    private val password: String,
+    private var password: String,
 
     // TODO: add password conformation
 
@@ -27,7 +27,7 @@ data class UserData(
     @Email
     @NotNull
     @NotEmpty
-    val email: String,
+    var email: String,
 
     @Column(name = "age")
     @Min(value = 18, message = "Age should not be less than 18")

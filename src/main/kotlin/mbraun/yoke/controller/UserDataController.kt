@@ -18,12 +18,19 @@ class UserDataController(@Autowired private val userDataService: UserDataService
     }
 
     @GetMapping("/{id}")
-    fun getSingleUserData(@PathVariable("id") id: UUID) {
+    fun getSingleUserData(@PathVariable id: UUID): ResponseEntity<UserData> {
         return userDataService.getSingleUserData(id)
     }
 
     @PostMapping
-    fun addUserData(@Valid @RequestBody userData: UserData) {
-        userDataService.addUserData(userData)
+    fun addUserData(@Valid @RequestBody userData: UserData): ResponseEntity<UserData> {
+        return userDataService.addUserData(userData)
     }
+
+    @PatchMapping("/{id}")
+    fun updateUsername(@PathVariable id: UUID, @RequestBody newUserName: String ): ResponseEntity<UserData> {
+        return userDataService.updateUserName(id, newUserName)
+    }
+
+
 }
