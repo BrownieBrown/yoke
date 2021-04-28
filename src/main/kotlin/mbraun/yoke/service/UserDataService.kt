@@ -27,7 +27,7 @@ class UserDataService(@Autowired private val userDataRepository: UserDataReposit
             return ResponseEntity<List<UserData>>(NO_CONTENT)
         }
 
-        return ResponseEntity<List<UserData>>(OK)
+        return ResponseEntity<List<UserData>>(userData, OK)
     }
 
 
