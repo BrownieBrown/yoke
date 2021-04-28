@@ -1,6 +1,8 @@
 package mbraun.yoke.service
 
 import mbraun.yoke.exception.ResourceNotFoundException
+import mbraun.yoke.model.Gender
+import mbraun.yoke.model.Role
 import mbraun.yoke.model.UserData
 import mbraun.yoke.repository.UserDataRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -76,4 +78,45 @@ class UserDataService(@Autowired private val userDataRepository: UserDataReposit
 
         return ResponseEntity<UserData>(userDataRepository.save(user), OK)
     }
+
+    fun updateAge(id: UUID, newAge: Int): ResponseEntity<UserData> {
+        val user = searchForUser(id)
+
+        if (newAge < 18 || newAge > 150) {
+            throw Exception("You must be over 18 or under 150 years old.")
+        }
+
+        user.age = newAge
+
+        return ResponseEntity<UserData>(userDataRepository.save(user), OK)
+    }
+
+    fun updateGender(id: UUID, newGender: Gender): ResponseEntity<UserData> {
+        val user = searchForUser(id)
+        user.gender = newGender
+
+        return ResponseEntity<UserData>(userDataRepository.save(user), OK)
+    }
+
+    fun updateRole(id: UUID, newRole: Role): ResponseEntity<UserData> {
+        val user = searchForUser(id)
+        user.role = newRole
+
+        return ResponseEntity<UserData>(userDataRepository.save(user), OK)
+    }
+
+    fun deleteUser(id: UUID): ResponseEntity<UserData> {
+        searchForUser(id)
+        userDataRepository.deleteById(id)
+
+        return ResponseEntity<UserData>(NO_CONTENT)
+    }
+
+    fun deleteAllData(): ResponseEntity<UserData> {
+        userDataRepository.deleteAll()
+
+        return ResponseEntity<UserData>(NO_CONTENT)
+    }
+
+
 }
