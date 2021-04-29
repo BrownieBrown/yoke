@@ -16,7 +16,7 @@ class UserDataLoader(@Autowired private val userDataRepository: UserDataReposito
     fun loadData(){
         userDataRepository.deleteAll()
         userDataRepository.save(UserData(
-            UUID.randomUUID(),
+            UUID.fromString("129412fb-cc37-45f4-849c-e649a32e3e2a"),
             "123456",
             "BrownieBrown",
             "marco.braun2013@icloud.com",
@@ -25,7 +25,7 @@ class UserDataLoader(@Autowired private val userDataRepository: UserDataReposito
             Role.PRIMARY_OWNER
         ))
         userDataRepository.save(UserData(
-            UUID.randomUUID(),
+            UUID.fromString("893922c8-93b4-4356-b261-69cd18ba9e23"),
             "i_love_marco",
             "SexyJTSophie",
             "julia.thum@gmx.de",
