@@ -24,6 +24,7 @@ enum class Permissions(val permission: String) {
     //Account management
     VIEW_ANALYTICS("analytics:view"),
     ACCOUNT_EMAIL_ALERTS("account_email:alerts"),
+    CHANGE_ACCOUNT_NAME("account_name:change"),
     EDIT_ACCOUNT_DETAILS("account_details:edit"),
     TRANSFER_ACCOUNT_OWNERSHIP("account_ownership:transfer"),
     CLOSE_ACCOUNT("account:close"),
