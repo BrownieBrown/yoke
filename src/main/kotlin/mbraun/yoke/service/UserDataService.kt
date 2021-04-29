@@ -3,8 +3,8 @@ package mbraun.yoke.service
 import mbraun.yoke.exception.ResourceNotFoundException
 import mbraun.yoke.model.Gender
 import mbraun.yoke.model.Role
-import mbraun.yoke.model.UserData
-import mbraun.yoke.repository.UserDataRepository
+import mbraun.yoke.model.User
+import mbraun.yoke.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus.*
 import org.springframework.http.ResponseEntity
@@ -13,48 +13,48 @@ import java.util.*
 
 
 @Service
-class UserDataService(@Autowired private val userDataRepository: UserDataRepository) {
+class UserDataService(@Autowired private val userRepository: UserRepository) {
 
-    fun searchForUser(id: UUID): UserData {
-        return userDataRepository.findById(id)
+    fun searchForUser(id: UUID): User {
+        return userRepository.findById(id)
             .orElseThrow { ResourceNotFoundException("The user with id = $id does not exist.") }
     }
 
-    fun getAllUserData(): ResponseEntity<List<UserData>> {
-        val userData = userDataRepository.findAll()
+    fun getAllUserData(): ResponseEntity<List<User>> {
+        val userData = userRepository.findAll()
 
         if (userData.isEmpty()) {
-            return ResponseEntity<List<UserData>>(NO_CONTENT)
+            return ResponseEntity<List<User>>(NO_CONTENT)
         }
 
-        return ResponseEntity<List<UserData>>(userData, OK)
+        return ResponseEntity<List<User>>(userData, OK)
     }
 
 
-    fun getSingleUserData(id: UUID): ResponseEntity<UserData> {
+    fun getSingleUserData(id: UUID): ResponseEntity<User> {
         val user = searchForUser(id)
-        return ResponseEntity<UserData>(user, OK)
+        return ResponseEntity<User>(user, OK)
 
     }
 
-    fun addUserData(userData: UserData): ResponseEntity<UserData> {
-        val mailAddressExists = userDataRepository.selectedEmailExists(userData.email)
-        val userNameExists = userDataRepository.selectedUserNameExists(userData.userName)
+    fun addUserData(user: User): ResponseEntity<User> {
+        val mailAddressExists = userRepository.selectedEmailExists(user.email)
+        val userNameExists = userRepository.selectedUserNameExists(user.userName)
 
         if (mailAddressExists) {
-            throw Exception("The email ${userData.email} is already taken.")
+            throw Exception("The email ${user.email} is already taken.")
         }
 
         if (userNameExists) {
-            throw Exception("The user name ${userData.userName} is already taken.")
+            throw Exception("The user name ${user.userName} is already taken.")
         }
 
-        return ResponseEntity<UserData>(userDataRepository.save(userData), CREATED)
+        return ResponseEntity<User>(userRepository.save(user), CREATED)
     }
 
-    fun updateUserName(id: UUID, newUserName: String): ResponseEntity<UserData> {
+    fun updateUserName(id: UUID, newUserName: String): ResponseEntity<User> {
         val user = searchForUser(id)
-        val userNameExists = userDataRepository.selectedUserNameExists(newUserName)
+        val userNameExists = userRepository.selectedUserNameExists(newUserName)
 
         if (userNameExists) {
             throw Exception("The user name $newUserName is already taken.")
@@ -62,13 +62,13 @@ class UserDataService(@Autowired private val userDataRepository: UserDataReposit
 
         user.userName = newUserName
 
-        return ResponseEntity<UserData>(userDataRepository.save(user), OK)
+        return ResponseEntity<User>(userRepository.save(user), OK)
 
     }
 
-    fun updateEmail(id: UUID, newEmail: String): ResponseEntity<UserData> {
+    fun updateEmail(id: UUID, newEmail: String): ResponseEntity<User> {
         val user = searchForUser(id)
-        val mailAddressExists = userDataRepository.selectedEmailExists(newEmail)
+        val mailAddressExists = userRepository.selectedEmailExists(newEmail)
 
         if (mailAddressExists) {
             throw Exception("The email $newEmail is already taken.")
@@ -76,10 +76,10 @@ class UserDataService(@Autowired private val userDataRepository: UserDataReposit
 
         user.email = newEmail
 
-        return ResponseEntity<UserData>(userDataRepository.save(user), OK)
+        return ResponseEntity<User>(userRepository.save(user), OK)
     }
 
-    fun updateAge(id: UUID, newAge: Int): ResponseEntity<UserData> {
+    fun updateAge(id: UUID, newAge: Int): ResponseEntity<User> {
         val user = searchForUser(id)
 
         if (newAge < 18 || newAge > 150) {
@@ -88,34 +88,34 @@ class UserDataService(@Autowired private val userDataRepository: UserDataReposit
 
         user.age = newAge
 
-        return ResponseEntity<UserData>(userDataRepository.save(user), OK)
+        return ResponseEntity<User>(userRepository.save(user), OK)
     }
 
-    fun updateGender(id: UUID, newGender: Gender): ResponseEntity<UserData> {
+    fun updateGender(id: UUID, newGender: Gender): ResponseEntity<User> {
         val user = searchForUser(id)
         user.gender = newGender
 
-        return ResponseEntity<UserData>(userDataRepository.save(user), OK)
+        return ResponseEntity<User>(userRepository.save(user), OK)
     }
 
-    fun updateRole(id: UUID, newRole: Role): ResponseEntity<UserData> {
+    fun updateRole(id: UUID, newRole: Role): ResponseEntity<User> {
         val user = searchForUser(id)
         user.role = newRole
 
-        return ResponseEntity<UserData>(userDataRepository.save(user), OK)
+        return ResponseEntity<User>(userRepository.save(user), OK)
     }
 
-    fun deleteUser(id: UUID): ResponseEntity<UserData> {
+    fun deleteUser(id: UUID): ResponseEntity<User> {
         searchForUser(id)
-        userDataRepository.deleteById(id)
+        userRepository.deleteById(id)
 
-        return ResponseEntity<UserData>(NO_CONTENT)
+        return ResponseEntity<User>(NO_CONTENT)
     }
 
-    fun deleteAllData(): ResponseEntity<UserData> {
-        userDataRepository.deleteAll()
+    fun deleteAllData(): ResponseEntity<User> {
+        userRepository.deleteAll()
 
-        return ResponseEntity<UserData>(NO_CONTENT)
+        return ResponseEntity<User>(NO_CONTENT)
     }
 
 

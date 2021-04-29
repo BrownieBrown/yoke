@@ -7,7 +7,7 @@ import javax.validation.constraints.*
 
 @Table(name = "user_data")
 @Entity
-data class UserData(
+data class User(
     @Column(name = "id")
     @Id
     private val id: UUID = UUID.randomUUID(),

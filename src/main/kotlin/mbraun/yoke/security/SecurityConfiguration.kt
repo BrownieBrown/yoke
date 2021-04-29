@@ -1,5 +1,7 @@
 package mbraun.yoke.security
 
+import mbraun.yoke.model.Role
+import mbraun.yoke.model.Role.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -17,8 +19,8 @@ class SecurityConfiguration(@Autowired private val passwordEncoder: PasswordEnco
             .csrf()
             .disable()
             .authorizeRequests()
-            .antMatchers("/registration", "/")
-            .permitAll()
+            .antMatchers("/registration", "/").permitAll()
+            .antMatchers("/api/**").hasAnyRole(PRIMARY_OWNER.name, OWNER.name, ADMIN.name)
             .anyRequest()
             .authenticated()
             .and()
