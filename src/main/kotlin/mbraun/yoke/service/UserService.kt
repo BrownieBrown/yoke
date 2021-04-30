@@ -13,7 +13,7 @@ import java.util.*
 
 
 @Service
-class UserDataService(@Autowired private val userRepository: UserRepository) {
+class UserService(@Autowired private val userRepository: UserRepository) {
 
     fun searchForUser(id: UUID): User {
         return userRepository.findById(id)
@@ -37,7 +37,7 @@ class UserDataService(@Autowired private val userRepository: UserRepository) {
 
     }
 
-    fun addUserData(user: User): ResponseEntity<User> {
+    fun addNewUser(user: User): ResponseEntity<User> {
         val mailAddressExists = userRepository.selectedEmailExists(user.email)
         val userNameExists = userRepository.selectedUserNameExists(user.userName)
 
@@ -105,17 +105,31 @@ class UserDataService(@Autowired private val userRepository: UserRepository) {
         return ResponseEntity<User>(userRepository.save(user), OK)
     }
 
-    fun deleteUser(id: UUID): ResponseEntity<User> {
+    fun removeUser(id: UUID): ResponseEntity<User> {
         searchForUser(id)
         userRepository.deleteById(id)
 
         return ResponseEntity<User>(NO_CONTENT)
     }
 
-    fun deleteAllData(): ResponseEntity<User> {
+    fun removeAllUsers(): ResponseEntity<User> {
         userRepository.deleteAll()
 
         return ResponseEntity<User>(NO_CONTENT)
+    }
+
+    fun appointAdmin(id: UUID): ResponseEntity<User> {
+        val user = searchForUser(id)
+        user.role = Role.ADMIN
+
+        return ResponseEntity<User>(userRepository.save(user), OK)
+    }
+
+    fun demoteAdmin(id: UUID): ResponseEntity<User> {
+        val user = searchForUser(id)
+        user.role = Role.EDITOR
+
+        return ResponseEntity<User>(userRepository.save(user), OK)
     }
 
 

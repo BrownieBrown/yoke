@@ -31,8 +31,7 @@ class UserDataLoader(@Autowired private val userRepository: UserRepository) {
             "julia.thum@gmx.de",
             25,
             Gender.FEMALE,
-            Role.ADMIN
+            Role.VIEWER
         ))
     }
-
 }
