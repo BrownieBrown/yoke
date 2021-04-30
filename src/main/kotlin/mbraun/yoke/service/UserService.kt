@@ -3,6 +3,7 @@ package mbraun.yoke.service
 import mbraun.yoke.exception.ResourceNotFoundException
 import mbraun.yoke.model.Gender
 import mbraun.yoke.model.Role
+import mbraun.yoke.model.Role.*
 import mbraun.yoke.model.User
 import mbraun.yoke.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -120,14 +121,28 @@ class UserService(@Autowired private val userRepository: UserRepository) {
 
     fun appointAdmin(id: UUID): ResponseEntity<User> {
         val user = searchForUser(id)
-        user.role = Role.ADMIN
+        user.role = ADMIN
 
         return ResponseEntity<User>(userRepository.save(user), OK)
     }
 
     fun demoteAdmin(id: UUID): ResponseEntity<User> {
         val user = searchForUser(id)
-        user.role = Role.EDITOR
+        user.role = EDITOR
+
+        return ResponseEntity<User>(userRepository.save(user), OK)
+    }
+
+    fun appointOwner(id: UUID): ResponseEntity<User> {
+        val user = searchForUser(id)
+        user.role = OWNER
+
+        return ResponseEntity<User>(userRepository.save(user), OK)
+    }
+
+    fun demoteOwner(id: UUID): ResponseEntity<User> {
+        val user = searchForUser(id)
+        user.role = ADMIN
 
         return ResponseEntity<User>(userRepository.save(user), OK)
     }
