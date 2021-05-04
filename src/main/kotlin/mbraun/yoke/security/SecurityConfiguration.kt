@@ -18,6 +18,9 @@ import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.provisioning.InMemoryUserDetailsManager
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher
+import java.util.concurrent.TimeUnit
 
 @Configuration
 @EnableWebSecurity
@@ -27,22 +30,34 @@ class SecurityConfiguration(@Autowired private val passwordEncoder: PasswordEnco
 
     override fun configure(http: HttpSecurity) {
         http
-            .csrf()
-            .disable()
+            //Implement for Front End
+//            .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//            .and()
+            .csrf().disable()
             .authorizeRequests()
             .antMatchers("/registration", "/").permitAll()
             .antMatchers("/api/**").hasAnyRole(PRIMARY_OWNER.name, OWNER.name, ADMIN.name)
-//            .antMatchers("/user_management/api/v1/userData/delete_all/**").hasRole(PRIMARY_OWNER.name)
-//            .antMatchers(DELETE, "/user_management/api/v1/userData/delete_user/**").hasAuthority(REMOVE_USER.permission)
-//            .antMatchers(POST, "/user_management/api/v1/userData/add_user/**").hasAuthority(INVITE_NEW_USER.permission)
-//            .antMatchers(PATCH, "/user_management/api/v1/userData/appoint_admin/**").hasAuthority(APPOINT_ADMINS.permission)
-//            .antMatchers(PATCH, "/user_management/api/v1/userData/demote_admin/**").hasAuthority(DEMOTE_ADMINS.permission)
-//            .antMatchers(PATCH, "/user_management/api/v1/userData/appoint_owner/**").hasAuthority(APPOINT_OWNERS.permission)
-//            .antMatchers(PATCH, "/user_management/api/v1/userData/demote_owner/**").hasAuthority(DEMOTE_OWNERS.permission)
             .anyRequest()
             .authenticated()
             .and()
-            .httpBasic()
+            .formLogin()
+            .loginPage("/login").permitAll()
+            .defaultSuccessUrl("/user", true)
+            .passwordParameter("password")
+            .usernameParameter("username")
+            .and()
+            .rememberMe()
+            .tokenValiditySeconds(TimeUnit.DAYS.toSeconds(21).toInt())
+            .key("somethingverysecured")
+            .rememberMeParameter("remember-me")
+            .and()
+            .logout()
+            .logoutUrl("/logout")
+            .logoutRequestMatcher(AntPathRequestMatcher("/logout", "GET"))
+            .clearAuthentication(true)
+            .invalidateHttpSession(true)
+            .deleteCookies("JSESSIONID", "remember-me")
+            .logoutSuccessUrl("/login")
     }
 
     @Bean
