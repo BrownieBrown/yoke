@@ -7,14 +7,18 @@ import mbraun.yoke.model.Role.*
 import mbraun.yoke.model.User
 import mbraun.yoke.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus.*
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 import java.util.*
 
 
 @Service
-class UserService(@Autowired private val userRepository: UserRepository) {
+class UserService(@Autowired @Qualifier("yoke") private val userRepository: UserRepository): UserDetailsService {
+
 
     fun searchForUser(id: UUID): User {
         return userRepository.findById(id)
@@ -147,5 +151,7 @@ class UserService(@Autowired private val userRepository: UserRepository) {
         return ResponseEntity<User>(userRepository.save(user), OK)
     }
 
-
+    override fun loadUserByUsername(username: String): UserDetails? {
+        return userRepository.findByUserName(username)
+    }
 }

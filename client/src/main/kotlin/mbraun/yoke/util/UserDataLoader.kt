@@ -23,7 +23,8 @@ class UserDataLoader(@Autowired private val userRepository: UserRepository) {
             "marco.braun2013@icloud.com",
             30,
             MALE,
-            PRIMARY_OWNER
+            PRIMARY_OWNER,
+            PRIMARY_OWNER.getGrantedAuthorities()
         ))
         userRepository.save(User(
             UUID.fromString("893922c8-93b4-4356-b261-69cd18ba9e23"),
@@ -32,7 +33,8 @@ class UserDataLoader(@Autowired private val userRepository: UserRepository) {
             "julia.thum@gmx.de",
             25,
             FEMALE,
-            VIEWER
+            VIEWER,
+            VIEWER.getGrantedAuthorities()
         ))
         userRepository.save(User(
             UUID.fromString("aae7e617-bc9e-4aff-8ad0-babf2b901a6b"),
@@ -41,7 +43,8 @@ class UserDataLoader(@Autowired private val userRepository: UserRepository) {
             "yannick.seppich@gmail.com",
             26,
             MALE,
-            OWNER
+            OWNER,
+            OWNER.getGrantedAuthorities()
         ))
     }
 }
