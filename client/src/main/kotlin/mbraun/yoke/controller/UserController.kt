@@ -1,7 +1,7 @@
 package mbraun.yoke.controller
 
-import mbraun.yoke.model.Gender
-import mbraun.yoke.model.Role
+import mbraun.yoke.model.EGender
+import mbraun.yoke.model.ERole
 import mbraun.yoke.model.User
 import mbraun.yoke.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -40,12 +40,12 @@ class UserController(@Autowired private val userService: UserService) {
     }
 
     @PatchMapping("/gender/{id}")
-    fun updateGender(@PathVariable id: UUID, @RequestBody newGender: Gender ): ResponseEntity<User> {
+    fun updateGender(@PathVariable id: UUID, @RequestBody newGender: EGender ): ResponseEntity<User> {
         return userService.updateGender(id, newGender)
     }
 
     @PatchMapping("/role/{id}")
-    fun updateRole(@PathVariable id: UUID, @RequestBody newRole: Role ): ResponseEntity<User> {
-        return userService.updateRole(id, newRole)
+    fun updateRole(@PathVariable id: UUID, @RequestBody newERole: ERole ): ResponseEntity<User> {
+        return userService.updateRole(id, newERole)
     }
 }

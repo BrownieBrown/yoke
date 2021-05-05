@@ -1,6 +1,6 @@
 package mbraun.yoke.security
 
-import mbraun.yoke.model.Role.*
+import mbraun.yoke.model.ERole.*
 import mbraun.yoke.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -18,7 +18,10 @@ import java.util.concurrent.TimeUnit
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-class SecurityConfiguration(@Autowired private val passwordEncoder: PasswordEncoder, @Autowired private val userService: UserService) : WebSecurityConfigurerAdapter() {
+class SecurityConfiguration(
+    @Autowired private val passwordEncoder: PasswordEncoder,
+    @Autowired private val userService: UserService
+) : WebSecurityConfigurerAdapter() {
 
 
     override fun configure(http: HttpSecurity) {

@@ -1,5 +1,6 @@
 package mbraun.yoke.model
 
+import org.hibernate.annotations.Type
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.util.*
@@ -7,17 +8,16 @@ import javax.persistence.*
 import javax.validation.constraints.*
 import kotlin.jvm.Transient
 
-@Table(name = "user_data")
+@Table(name = "users")
 @Entity
 data class User(
-    @Column(name = "id")
     @Id
     private val id: UUID = UUID.randomUUID(),
 
     @Column(name = "password")
     private var password: String,
 
-    @Column(name = "user_name", unique = true)
+    @Column(name = "username", unique = true)
     @NotNull
     @NotBlank(message =  "UserName can not be null")
     var userName: String,
@@ -35,11 +35,11 @@ data class User(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gender")
-    var gender: Gender,
+    var gender: EGender,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    var role: Role,
+    var ERole: ERole,
 
     @Transient
     val grantedAuthorities:Set<GrantedAuthority>,
@@ -86,48 +86,4 @@ data class User(
     override fun isEnabled(): Boolean {
         return isEnabled
     }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as User
-
-        if (id != other.id) return false
-        if (password != other.password) return false
-        if (userName != other.userName) return false
-        if (email != other.email) return false
-        if (age != other.age) return false
-        if (gender != other.gender) return false
-        if (role != other.role) return false
-        if (grantedAuthorities != other.grantedAuthorities) return false
-        if (isAccountNonExpired != other.isAccountNonExpired) return false
-        if (isAccountNonLocked != other.isAccountNonLocked) return false
-        if (isCredentialsNonExpired != other.isCredentialsNonExpired) return false
-        if (isEnabled != other.isEnabled) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = id.hashCode()
-        result = 31 * result + password.hashCode()
-        result = 31 * result + userName.hashCode()
-        result = 31 * result + email.hashCode()
-        result = 31 * result + age
-        result = 31 * result + gender.hashCode()
-        result = 31 * result + role.hashCode()
-        result = 31 * result + grantedAuthorities.hashCode()
-        result = 31 * result + isAccountNonExpired.hashCode()
-        result = 31 * result + isAccountNonLocked.hashCode()
-        result = 31 * result + isCredentialsNonExpired.hashCode()
-        result = 31 * result + isEnabled.hashCode()
-        return result
-    }
-
-    override fun toString(): String {
-        return "User(id=$id, password='$password', userName='$userName', email='$email', age=$age, gender=$gender, role=$role, grantedAuthorities=$grantedAuthorities, isAccountNonExpired=$isAccountNonExpired, isAccountNonLocked=$isAccountNonLocked, isCredentialsNonExpired=$isCredentialsNonExpired, isEnabled=$isEnabled)"
-    }
-
-
 }

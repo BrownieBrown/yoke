@@ -1,6 +1,6 @@
 package mbraun.yoke.model
 
-enum class Gender {
+enum class EGender {
     MALE,
     FEMALE,
     OTHER
