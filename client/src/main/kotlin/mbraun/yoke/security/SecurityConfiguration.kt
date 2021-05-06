@@ -1,6 +1,7 @@
 package mbraun.yoke.security
 
 import mbraun.yoke.model.Role.*
+import mbraun.yoke.security.jwt.JwtUsernameAndPasswordAuthenticationFilter
 import mbraun.yoke.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -11,6 +12,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.config.http.SessionCreationPolicy.*
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import java.util.concurrent.TimeUnit
@@ -30,30 +33,14 @@ class SecurityConfiguration(
 //            .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 //            .and()
             .csrf().disable()
+            .sessionManagement().sessionCreationPolicy(STATELESS)
+            .and()
+            .addFilter(JwtUsernameAndPasswordAuthenticationFilter(authenticationManager()))
             .authorizeRequests()
             .antMatchers("/registration", "/").permitAll()
             .antMatchers("/api/**").hasAnyRole(PRIMARY_OWNER.name, OWNER.name, ADMIN.name)
             .anyRequest()
             .authenticated()
-            .and()
-            .formLogin()
-            .loginPage("/login").permitAll()
-            .defaultSuccessUrl("/user", true)
-            .passwordParameter("password")
-            .usernameParameter("username")
-            .and()
-            .rememberMe()
-            .tokenValiditySeconds(TimeUnit.DAYS.toSeconds(21).toInt())
-            .key("somethingverysecured")
-            .rememberMeParameter("remember-me")
-            .and()
-            .logout()
-            .logoutUrl("/logout")
-            .logoutRequestMatcher(AntPathRequestMatcher("/logout", "GET"))
-            .clearAuthentication(true)
-            .invalidateHttpSession(true)
-            .deleteCookies("JSESSIONID", "remember-me")
-            .logoutSuccessUrl("/login")
     }
 
     override fun configure(auth: AuthenticationManagerBuilder) {

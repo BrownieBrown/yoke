@@ -14,14 +14,14 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class UsernameAndPasswordAuthenticationFilter(authenticationManager: AuthenticationManager) :
+class JwtUsernameAndPasswordAuthenticationFilter(authenticationManager: AuthenticationManager) :
     UsernamePasswordAuthenticationFilter() {
 
     override fun attemptAuthentication(request: HttpServletRequest, response: HttpServletResponse): Authentication {
 
         try {
             val authenticationRequest =
-                ObjectMapper().readValue(request.inputStream, UsernameAndPasswordAuthenticationRequest::class.java)
+                ObjectMapper().readValue(request.inputStream, JwtUsernameAndPasswordAuthenticationRequest::class.java)
 
             val authentication = UsernamePasswordAuthenticationToken(
                 authenticationRequest.username,
