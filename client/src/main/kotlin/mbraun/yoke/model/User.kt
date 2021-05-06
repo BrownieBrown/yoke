@@ -1,6 +1,5 @@
 package mbraun.yoke.model
 
-import org.hibernate.annotations.Type
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.util.*
@@ -35,11 +34,11 @@ data class User(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gender")
-    var gender: EGender,
+    var gender: Gender,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    var ERole: ERole,
+    var role: Role,
 
     @Transient
     val grantedAuthorities:Set<GrantedAuthority>,

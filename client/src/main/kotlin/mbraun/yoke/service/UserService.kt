@@ -1,9 +1,9 @@
 package mbraun.yoke.service
 
 import mbraun.yoke.exception.ResourceNotFoundException
-import mbraun.yoke.model.EGender
-import mbraun.yoke.model.ERole
-import mbraun.yoke.model.ERole.*
+import mbraun.yoke.model.Gender
+import mbraun.yoke.model.Role
+import mbraun.yoke.model.Role.*
 import mbraun.yoke.model.User
 import mbraun.yoke.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -96,16 +96,16 @@ class UserService(@Autowired @Qualifier("yoke") private val userRepository: User
         return ResponseEntity<User>(userRepository.save(user), OK)
     }
 
-    fun updateGender(id: UUID, newGender: EGender): ResponseEntity<User> {
+    fun updateGender(id: UUID, newGender: Gender): ResponseEntity<User> {
         val user = searchForUser(id)
         user.gender = newGender
 
         return ResponseEntity<User>(userRepository.save(user), OK)
     }
 
-    fun updateRole(id: UUID, newERole: ERole): ResponseEntity<User> {
+    fun updateRole(id: UUID, newERole: Role): ResponseEntity<User> {
         val user = searchForUser(id)
-        user.ERole = newERole
+        user.role = newERole
 
         return ResponseEntity<User>(userRepository.save(user), OK)
     }
@@ -125,28 +125,28 @@ class UserService(@Autowired @Qualifier("yoke") private val userRepository: User
 
     fun appointAdmin(id: UUID): ResponseEntity<User> {
         val user = searchForUser(id)
-        user.ERole = ADMIN
+        user.role = ADMIN
 
         return ResponseEntity<User>(userRepository.save(user), OK)
     }
 
     fun demoteAdmin(id: UUID): ResponseEntity<User> {
         val user = searchForUser(id)
-        user.ERole = EDITOR
+        user.role = EDITOR
 
         return ResponseEntity<User>(userRepository.save(user), OK)
     }
 
     fun appointOwner(id: UUID): ResponseEntity<User> {
         val user = searchForUser(id)
-        user.ERole = OWNER
+        user.role = OWNER
 
         return ResponseEntity<User>(userRepository.save(user), OK)
     }
 
     fun demoteOwner(id: UUID): ResponseEntity<User> {
         val user = searchForUser(id)
-        user.ERole = ADMIN
+        user.role = ADMIN
 
         return ResponseEntity<User>(userRepository.save(user), OK)
     }

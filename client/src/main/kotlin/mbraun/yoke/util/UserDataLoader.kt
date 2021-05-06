@@ -1,8 +1,8 @@
 package mbraun.yoke.util
 
-import mbraun.yoke.model.EGender.FEMALE
-import mbraun.yoke.model.EGender.MALE
-import mbraun.yoke.model.ERole.*
+import mbraun.yoke.model.Gender.FEMALE
+import mbraun.yoke.model.Gender.MALE
+import mbraun.yoke.model.Role.*
 import mbraun.yoke.model.User
 import mbraun.yoke.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired

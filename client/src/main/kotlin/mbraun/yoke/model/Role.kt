@@ -1,11 +1,11 @@
 package mbraun.yoke.model
 
 import com.google.common.collect.Sets
-import mbraun.yoke.model.EPermissions.*
+import mbraun.yoke.model.Permissions.*
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 
-enum class ERole(private val permissions: Set<EPermissions>) {
+enum class Role(private val permissions: Set<Permissions>) {
     PRIMARY_OWNER(
         Sets.newHashSet(
             //File management

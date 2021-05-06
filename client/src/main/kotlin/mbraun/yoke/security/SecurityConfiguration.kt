@@ -1,6 +1,6 @@
 package mbraun.yoke.security
 
-import mbraun.yoke.model.ERole.*
+import mbraun.yoke.model.Role.*
 import mbraun.yoke.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
