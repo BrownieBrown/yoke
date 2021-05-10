@@ -1,6 +1,6 @@
 package mbraun.yoke.model
 
-enum class Permissions(val permission: String) {
+enum class Permissions(private val permission: String) {
     // File Management
     VIEW_FILES("files:view"),
     DOWNLOAD_FILES("files:download"),
@@ -42,5 +42,9 @@ enum class Permissions(val permission: String) {
     CHANGE_BILLING_PLAN("billing_plan:change"),
     MANAGE_PAYMENT_METHOD("payment_method:manage"),
     MANAGE_BILLING_DETAILS("billing_details:manage"),
-    BILLING_EMAIL_ALERTS("billing_emails:alert"),
+    BILLING_EMAIL_ALERTS("billing_emails:alert");
+
+    fun getPermission(): String {
+        return permission
+    }
 }

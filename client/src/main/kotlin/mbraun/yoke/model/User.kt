@@ -41,10 +41,10 @@ data class User(
     var role: Role,
 
     @Transient
-    val grantedAuthorities:Set<GrantedAuthority>,
+    val grantedAuthorities: Set<GrantedAuthority>,
 
     @Column(name = "account_non_expired")
-    private val isAccountNonExpired: Boolean = true,
+   private val isAccountNonExpired: Boolean = true,
 
     @Column(name = "account_non_locked")
     private val isAccountNonLocked: Boolean = true,
@@ -66,7 +66,7 @@ data class User(
         return password
     }
 
-    override fun getUsername(): String {
+    override fun getUsername(): String {authorities
         return userName
     }
 

@@ -37,7 +37,7 @@ class SecurityConfiguration(
             .and()
             .addFilter(JwtUsernameAndPasswordAuthenticationFilter(authenticationManager()))
             .authorizeRequests()
-            .antMatchers("/registration", "/").permitAll()
+            .antMatchers("/").permitAll()
             .antMatchers("/api/**").hasAnyRole(PRIMARY_OWNER.name, OWNER.name, ADMIN.name)
             .anyRequest()
             .authenticated()

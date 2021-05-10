@@ -25,7 +25,11 @@ class UserDataLoader(@Autowired private val userRepository: UserRepository, priv
             30,
             MALE,
             PRIMARY_OWNER,
-            PRIMARY_OWNER.getGrantedAuthorities()
+            PRIMARY_OWNER.getGrantedAuthorities(),
+            isAccountNonExpired = true,
+            isAccountNonLocked = true,
+            isCredentialsNonExpired = true,
+            isEnabled = true,
         ))
         userRepository.save(User(
             UUID.fromString("893922c8-93b4-4356-b261-69cd18ba9e23"),
@@ -35,7 +39,11 @@ class UserDataLoader(@Autowired private val userRepository: UserRepository, priv
             25,
             FEMALE,
             VIEWER,
-            VIEWER.getGrantedAuthorities()
+            VIEWER.getGrantedAuthorities(),
+            isAccountNonExpired = true,
+            isAccountNonLocked = true,
+            isCredentialsNonExpired = true,
+            isEnabled = true,
         ))
         userRepository.save(User(
             UUID.fromString("aae7e617-bc9e-4aff-8ad0-babf2b901a6b"),
@@ -45,7 +53,11 @@ class UserDataLoader(@Autowired private val userRepository: UserRepository, priv
             26,
             MALE,
             OWNER,
-            OWNER.getGrantedAuthorities()
+            OWNER.getGrantedAuthorities(),
+            isAccountNonExpired = true,
+            isAccountNonLocked = true,
+            isCredentialsNonExpired = true,
+            isEnabled = true,
         ))
     }
 }

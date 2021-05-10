@@ -2,10 +2,11 @@ package mbraun.yoke.model
 
 import com.google.common.collect.Sets
 import mbraun.yoke.model.Permissions.*
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
+import java.util.stream.Collectors
 
-enum class Role(private val permissions: Set<Permissions>) {
+
+enum class Role (private val permissions: Set<Permissions>) {
     PRIMARY_OWNER(
         Sets.newHashSet(
             //File management
@@ -180,11 +181,19 @@ enum class Role(private val permissions: Set<Permissions>) {
             BILLING_EMAIL_ALERTS
         ));
 
-    fun getGrantedAuthorities() : Set<GrantedAuthority> {
-        val permissions = permissions.asSequence().map { permission -> SimpleGrantedAuthority(permission.permission) }.toMutableSet()
+    private fun getPermissions(): Set<Permissions> {
+        return permissions
+    }
 
-        permissions.add(SimpleGrantedAuthority("ROLE_${this.name}"))
-
+    fun getGrantedAuthorities(): Set<SimpleGrantedAuthority> {
+        val permissions = getPermissions().stream()
+            .map { permission: Permissions ->
+                SimpleGrantedAuthority(
+                    permission.getPermission()
+                )
+            }
+            .collect(Collectors.toSet())
+        permissions.add(SimpleGrantedAuthority("ROLE_$name"))
         return permissions
     }
 }
