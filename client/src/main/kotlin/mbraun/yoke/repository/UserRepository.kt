@@ -15,6 +15,6 @@ interface UserRepository: JpaRepository<User, UUID> {
     @Query("SELECT case when count(s) > 0 then true else false end from user_data s where s.user_name = ?1", nativeQuery = true)
     fun selectedUserNameExists(userName: String) : Boolean
 
-    fun findByUserName(username: String): User
+    fun findByUsername(username: String): User
 
 }

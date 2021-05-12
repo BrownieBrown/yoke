@@ -1,24 +1,16 @@
 package mbraun.yoke.service
 
 import mbraun.yoke.exception.ResourceNotFoundException
-import mbraun.yoke.model.Gender
-import mbraun.yoke.model.Role
-import mbraun.yoke.model.Role.*
 import mbraun.yoke.model.User
 import mbraun.yoke.repository.UserRepository
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus.*
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 import java.util.*
 
 
 @Service
-class UserService(@Autowired @Qualifier("yoke") private val userRepository: UserRepository): UserDetailsService {
-
+class UserService(private val userRepository: UserRepository) {
 
     fun searchForUser(id: UUID): User {
         return userRepository.findById(id)
@@ -44,14 +36,14 @@ class UserService(@Autowired @Qualifier("yoke") private val userRepository: User
 
     fun addNewUser(user: User): ResponseEntity<User> {
         val mailAddressExists = userRepository.selectedEmailExists(user.email)
-        val userNameExists = userRepository.selectedUserNameExists(user.userName)
+        val userNameExists = userRepository.selectedUserNameExists(user.username)
 
         if (mailAddressExists) {
             throw Exception("The email ${user.email} is already taken.")
         }
 
         if (userNameExists) {
-            throw Exception("The user name ${user.userName} is already taken.")
+            throw Exception("The user name ${user.username} is already taken.")
         }
 
         return ResponseEntity<User>(userRepository.save(user), CREATED)
@@ -65,7 +57,7 @@ class UserService(@Autowired @Qualifier("yoke") private val userRepository: User
             throw Exception("The user name $newUserName is already taken.")
         }
 
-        user.userName = newUserName
+        user.username = newUserName
 
         return ResponseEntity<User>(userRepository.save(user), OK)
 
@@ -84,31 +76,25 @@ class UserService(@Autowired @Qualifier("yoke") private val userRepository: User
         return ResponseEntity<User>(userRepository.save(user), OK)
     }
 
-    fun updateAge(id: UUID, newAge: Int): ResponseEntity<User> {
-        val user = searchForUser(id)
+//    fun updateAge(id: UUID, newAge: Int): ResponseEntity<User> {
+//        val user = searchForUser(id)
+//
+//        if (newAge < 18 || newAge > 150) {
+//            throw Exception("You must be over 18 or under 150 years old.")
+//        }
+//
+//        user.age = newAge
+//
+//        return ResponseEntity<User>(userRepository.save(user), OK)
+//    }
 
-        if (newAge < 18 || newAge > 150) {
-            throw Exception("You must be over 18 or under 150 years old.")
-        }
+//    fun updateGender(id: UUID, newGender: EGender): ResponseEntity<User> {
+//        val user = searchForUser(id)
+//        user.gender = newGender
+//
+//        return ResponseEntity<User>(userRepository.save(user), OK)
+//    }
 
-        user.age = newAge
-
-        return ResponseEntity<User>(userRepository.save(user), OK)
-    }
-
-    fun updateGender(id: UUID, newGender: Gender): ResponseEntity<User> {
-        val user = searchForUser(id)
-        user.gender = newGender
-
-        return ResponseEntity<User>(userRepository.save(user), OK)
-    }
-
-    fun updateRole(id: UUID, newERole: Role): ResponseEntity<User> {
-        val user = searchForUser(id)
-        user.role = newERole
-
-        return ResponseEntity<User>(userRepository.save(user), OK)
-    }
 
     fun removeUser(id: UUID): ResponseEntity<User> {
         searchForUser(id)
@@ -123,35 +109,4 @@ class UserService(@Autowired @Qualifier("yoke") private val userRepository: User
         return ResponseEntity<User>(NO_CONTENT)
     }
 
-    fun appointAdmin(id: UUID): ResponseEntity<User> {
-        val user = searchForUser(id)
-        user.role = ADMIN
-
-        return ResponseEntity<User>(userRepository.save(user), OK)
-    }
-
-    fun demoteAdmin(id: UUID): ResponseEntity<User> {
-        val user = searchForUser(id)
-        user.role = EDITOR
-
-        return ResponseEntity<User>(userRepository.save(user), OK)
-    }
-
-    fun appointOwner(id: UUID): ResponseEntity<User> {
-        val user = searchForUser(id)
-        user.role = OWNER
-
-        return ResponseEntity<User>(userRepository.save(user), OK)
-    }
-
-    fun demoteOwner(id: UUID): ResponseEntity<User> {
-        val user = searchForUser(id)
-        user.role = ADMIN
-
-        return ResponseEntity<User>(userRepository.save(user), OK)
-    }
-
-    override fun loadUserByUsername(username: String): UserDetails? {
-        return userRepository.findByUserName(username)
-    }
 }
